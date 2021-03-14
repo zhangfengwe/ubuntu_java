@@ -37,4 +37,8 @@ public class StringTypeHandler implements RefTypeInterface {
     public boolean isLatin1() {
         return COMPACT_STRINGS && coder == LATIN1;
     }
+
+    public Class<?> getClazz() {
+        return String.class;
+    }
 }

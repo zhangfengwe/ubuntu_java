@@ -1,4 +1,4 @@
-package com.fwzhang.test.first.Generic;
+package com.fwzhang.test.first.generic;
 
 import com.fwzhang.first.generic.ClassGeneric;
 
