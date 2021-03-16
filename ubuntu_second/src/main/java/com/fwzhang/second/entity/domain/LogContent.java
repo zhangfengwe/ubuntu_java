@@ -1,4 +1,6 @@
-package com.fwzhang.second.dutychain.logger;
+package com.fwzhang.second.entity.domain;
+
+import com.fwzhang.second.entity.enumeration.LogLevelEnum;
 
 /**
  * 日志内容

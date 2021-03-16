@@ -1,6 +1,8 @@
 package com.fwzhang.second.dutychain.logger;
 
 
+import com.fwzhang.second.entity.domain.LogContent;
+import com.fwzhang.second.entity.enumeration.LogLevelEnum;
 import com.fwzhang.util.DateTimeUtil;
 
 import java.time.Instant;

@@ -1,5 +1,8 @@
 package com.fwzhang.second.dutychain.logger;
 
+import com.fwzhang.second.entity.domain.LogContent;
+import com.fwzhang.second.entity.enumeration.LogLevelEnum;
+
 /**
  * 抽象日志打印类
  */

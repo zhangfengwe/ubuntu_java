@@ -1,4 +1,4 @@
-package com.fwzhang.second.dutychain.logger;
+package com.fwzhang.second.entity.enumeration;
 
 /**
  * 日志登记枚举类
