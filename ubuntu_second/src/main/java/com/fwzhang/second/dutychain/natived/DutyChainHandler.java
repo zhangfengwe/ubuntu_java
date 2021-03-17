@@ -19,6 +19,9 @@ public interface DutyChainHandler {
         if (onHandler(condition)) {
             this.process(msgData);
         } else {
+            if (Objects.isNull(this.nextHandler())) {
+                return;
+            }
             this.nextHandler().handler(msgData);
         }
     }
