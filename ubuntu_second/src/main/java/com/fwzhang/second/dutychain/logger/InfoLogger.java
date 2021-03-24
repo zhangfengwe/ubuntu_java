@@ -23,4 +23,9 @@ public class InfoLogger extends AbstractLogger {
 
         }
     }
+
+    @Override
+    public AbstractLogger next() {
+        return null;
+    }
 }

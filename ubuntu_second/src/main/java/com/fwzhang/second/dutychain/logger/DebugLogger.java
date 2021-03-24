@@ -8,6 +8,9 @@ import java.time.Instant;
 import java.util.Objects;
 
 public class DebugLogger extends AbstractLogger {
+
+    private AbstractLogger next;
+
     @Override
     public LogLevelEnum getLevel() {
         return LogLevelEnum.DEBUG;
@@ -20,6 +23,13 @@ public class DebugLogger extends AbstractLogger {
                     DateTimeUtil.formatInstant(Instant.now(), DateTimeUtil.DATE_FORMAT),
                     content.getSystemName(), content.getLogLevel().name(), content.getContent()));
 
+        } else {
+            next().printLog(content);
         }
+    }
+
+    @Override
+    public AbstractLogger next() {
+        return this.next;
     }
 }

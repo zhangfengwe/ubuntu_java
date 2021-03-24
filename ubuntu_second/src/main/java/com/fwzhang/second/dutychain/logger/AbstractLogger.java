@@ -15,6 +15,8 @@ public abstract class AbstractLogger {
 
     public abstract void printLog(LogContent content);
 
+    public abstract AbstractLogger next();
+
     public String getLogTemplate() {
         return logTemplate;
     }
