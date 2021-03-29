@@ -1,7 +1,7 @@
 package com.fwzhang.test.second;
 
-import com.fwzhang.second.decorator.ConcreteComponent;
-import com.fwzhang.second.decorator.ConcreteDecorator;
+import com.fwzhang.second.decorator.natived.ConcreteComponent;
+import com.fwzhang.second.decorator.natived.ConcreteDecorator;
 
 public class DecoratorTest {
     public static void main(String[] args) {

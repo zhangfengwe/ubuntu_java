@@ -1,4 +1,4 @@
-package com.fwzhang.second.decorator;
+package com.fwzhang.second.decorator.natived;
 
 public class ConcreteComponent implements Component {
 

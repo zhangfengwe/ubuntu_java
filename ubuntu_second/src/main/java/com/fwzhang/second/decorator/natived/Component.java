@@ -1,4 +1,4 @@
-package com.fwzhang.second.decorator;
+package com.fwzhang.second.decorator.natived;
 
 /**
  * 抽象构建角色
