@@ -8,6 +8,7 @@ public class FacadeTest {
 
     public static void main(String[] args) {
         EncryptFacade facade = new EncryptFacade();
-        facade.encryptFile(new File(""), "");
+        facade.encryptFile(new File("ubuntu_second/src/main/resources/facadeTestSource.txt"),
+                "ubuntu_second/src/main/resources/facadeTestAim.txt");
     }
 }
