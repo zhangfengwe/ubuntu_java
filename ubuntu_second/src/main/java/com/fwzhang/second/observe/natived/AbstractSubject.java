@@ -3,7 +3,7 @@ package com.fwzhang.second.observe.natived;
 /**
  * 被观察者
  */
-public interface AbstractSubject<T> {
+public interface AbstractSubject<T extends Observer> {
 
     /**
      * 订阅观察者
