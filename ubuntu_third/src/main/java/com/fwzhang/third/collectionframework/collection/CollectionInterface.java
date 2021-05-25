@@ -2,6 +2,8 @@ package com.fwzhang.third.collectionframework.collection;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * @ClassName Collection
@@ -50,4 +52,26 @@ public interface CollectionInterface extends Iterable<Object>{
     boolean containsAll(Collection<?> collection);
     boolean addAll(Collection<? extends Object> collection);
     boolean removeAll(Collection<? extends Object> collection);
+
+    boolean retainAll(Collection<?> collection);
+
+    /**
+     * 删除符合条件的项
+     * @param filter
+     * @return
+     */
+    default boolean removeIf(Predicate<Object> filter) {
+        boolean removed = false;
+        final Iterator<Object> each = iterator();
+        while (each.hasNext()) {
+            if (filter.test(each.next())) {
+                each.remove();
+                removed = true;
+            }
+        }
+        return removed;
+    }
+
+    Stream<Object> stream();
+    Stream<Object> parallelStream();
 }
