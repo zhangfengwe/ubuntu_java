@@ -72,6 +72,19 @@ public interface CollectionInterface extends Iterable<Object>{
         return removed;
     }
 
+    /**
+     * 获取Stream 1.8新增
+     * 为所有Collection接口的实现类定义了获取流的方法
+     * 通过default修饰符实现在接口中定义具体方法
+     * @return
+     */
     Stream<Object> stream();
+
+    /**
+     * stream()获取的是串行的流,线程安全
+     * parallelStream()获取的是并行的流,流中定义的数据处理会并行执行
+     * 通过ForkJoin(1.7提供)框架实现
+     * @return
+     */
     Stream<Object> parallelStream();
 }
