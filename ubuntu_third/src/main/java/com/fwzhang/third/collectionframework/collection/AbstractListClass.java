@@ -10,7 +10,26 @@ import java.util.*;
  * @Version 1.0
  **/
 
-public class AbstractListClass<E> extends AbstractCollection<E> implements List<E> {
+public abstract class AbstractListClass<E> extends AbstractCollection<E> implements List<E> {
+
+    /**
+     * AbstractList继承了AbstractCollection抽象类
+     * 集合框架中Abstract的抽象数据结构一般都不支持add操作, AbstractList同样不支持add操作
+     * AbstractList是不可变的数据集合,所以对add,set,remove,removeRange(七拐八拐最终调用remove方法还是不支持)方法不支持
+     */
+
+    /**
+     * 添加元素
+     * @param e
+     * @return
+     */
+    public boolean add(E e) {
+        // 调用add(index, element)
+        add(size(), e);
+        return true;
+    }
+
+
     @Override
     public Iterator<E> iterator() {
         return null;
@@ -21,19 +40,34 @@ public class AbstractListClass<E> extends AbstractCollection<E> implements List<
         return false;
     }
 
-    @Override
-    public E get(int index) {
-        return null;
-    }
+    /**
+     * AbstractList中get为抽象方法，需要子类重写
+     * @param index
+     * @return
+     */
+    public abstract E get(int index);
 
-    @Override
+    /**
+     * AbstractList不支持set方法
+     * @param index
+     * @param element
+     * @throws UnsupportedOperationException
+     * @return
+     */
     public E set(int index, E element) {
-        return null;
+        throw new UnsupportedOperationException("AbstractList un support set operation");
     }
 
+    /**
+     * AbstractList类add方法的实际调用方法
+     * 会抛出不支持该造作异常
+     * @param index
+     * @param element
+     * @throws UnsupportedOperationException
+     */
     @Override
     public void add(int index, E element) {
-
+        throw new UnsupportedOperationException("AbstractList un support add operation");
     }
 
     @Override
