@@ -29,12 +29,6 @@ public abstract class AbstractListClass<E> extends AbstractCollection<E> impleme
         return true;
     }
 
-
-    @Override
-    public Iterator<E> iterator() {
-        return null;
-    }
-
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         return false;
@@ -96,6 +90,7 @@ public abstract class AbstractListClass<E> extends AbstractCollection<E> impleme
                     return it.previousIndex();
         } else {
             while (it.hasNext())
+                // 每次调用next或previous方法,迭代器的游标都会有相应的变化,加一或减一,并返回
                 if (o.equals(it.next()))
                     return it.previousIndex();
         }
@@ -126,14 +121,32 @@ public abstract class AbstractListClass<E> extends AbstractCollection<E> impleme
         return 0;
     }
 
+    /**
+     * listIterator()方法获取的是ListIterator接口的实现类对象
+     * 支持对list中元素进行修改, 但是由于迭代器的add,set,remove方法本质上会调用
+     * AbstractList本身的add,remove方法,所以实质上无法通过迭代器对AbstractList中的元素进行修改
+     * @return
+     */
     @Override
     public ListIterator<E> listIterator() {
-        return null;
+        return listIterator(0);
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        return null;
+        rangeCheckForAdd(0);
+        return new ListItr(index);
+    }
+
+    /**
+     * iterator()方法获取的是iterator接口的实现类对象
+     * 所以不支持list中元素的修改,同时也不支持迭代器双向迭代
+     * 仅支持next操作
+     * @return
+     */
+    @Override
+    public Iterator<E> iterator() {
+        return new Itr();
     }
 
     @Override
@@ -144,5 +157,134 @@ public abstract class AbstractListClass<E> extends AbstractCollection<E> impleme
     @Override
     public int size() {
         return 0;
+    }
+
+    protected transient int modCount = 0;
+
+    private void rangeCheckForAdd(int index) {
+        if (index < 0 || index > size())
+            throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    private String outOfBoundsMsg(int index) {
+        return "Index: "+index+", Size: "+size();
+    }
+
+    private class Itr implements Iterator<E> {
+        /**
+         * Index of element to be returned by subsequent call to next.
+         */
+        int cursor = 0;
+
+        /**
+         * Index of element returned by most recent call to next or
+         * previous.  Reset to -1 if this element is deleted by a call
+         * to remove.
+         */
+        int lastRet = -1;
+
+        /**
+         * The modCount value that the iterator believes that the backing
+         * List should have.  If this expectation is violated, the iterator
+         * has detected concurrent modification.
+         */
+        int expectedModCount = modCount;
+
+        public boolean hasNext() {
+            return cursor != size();
+        }
+
+        public E next() {
+            checkForComodification();
+            try {
+                int i = cursor;
+                E next = get(i);
+                lastRet = i;
+                cursor = i + 1;
+                return next;
+            } catch (IndexOutOfBoundsException e) {
+                checkForComodification();
+                throw new NoSuchElementException();
+            }
+        }
+
+        public void remove() {
+            if (lastRet < 0)
+                throw new IllegalStateException();
+            checkForComodification();
+
+            try {
+                AbstractListClass.this.remove(lastRet);
+                if (lastRet < cursor)
+                    cursor--;
+                lastRet = -1;
+                expectedModCount = modCount;
+            } catch (IndexOutOfBoundsException e) {
+                throw new ConcurrentModificationException();
+            }
+        }
+
+        final void checkForComodification() {
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+        }
+    }
+
+    private class ListItr extends Itr implements ListIterator<E> {
+        ListItr(int index) {
+            cursor = index;
+        }
+
+        public boolean hasPrevious() {
+            return cursor != 0;
+        }
+
+        public E previous() {
+            checkForComodification();
+            try {
+                int i = cursor - 1;
+                E previous = get(i);
+                lastRet = cursor = i;
+                return previous;
+            } catch (IndexOutOfBoundsException e) {
+                checkForComodification();
+                throw new NoSuchElementException();
+            }
+        }
+
+        public int nextIndex() {
+            return cursor;
+        }
+
+        public int previousIndex() {
+            return cursor-1;
+        }
+
+        public void set(E e) {
+            if (lastRet < 0)
+                throw new IllegalStateException();
+            checkForComodification();
+
+            try {
+                AbstractListClass.this.set(lastRet, e);
+                expectedModCount = modCount;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+        }
+
+        public void add(E e) {
+            checkForComodification();
+
+            try {
+                int i = cursor;
+                AbstractListClass.this.add(i, e);
+                lastRet = -1;
+                cursor = i + 1;
+                expectedModCount = modCount;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
+        }
     }
 }
