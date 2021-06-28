@@ -70,18 +70,59 @@ public abstract class AbstractListClass<E> extends AbstractCollection<E> impleme
         throw new UnsupportedOperationException("AbstractList un support add operation");
     }
 
+    /**
+     *
+     * @param index
+     * @throws UnsupportedOperationException
+     * @return
+     */
     @Override
     public E remove(int index) {
-        return null;
+        throw new UnsupportedOperationException("AbstractList un support remove operation");
     }
 
+    /**
+     * 1、获取AbstractList的内部类ListIterator的实现类
+     * 2、通过ListIterator的previousIndex方法获取元素的索引值
+     * @param o
+     * @return
+     */
     @Override
     public int indexOf(Object o) {
-        return 0;
+        ListIterator<E> it = listIterator();
+        if (o==null) {
+            while (it.hasNext())
+                if (it.next()==null)
+                    return it.previousIndex();
+        } else {
+            while (it.hasNext())
+                if (o.equals(it.next()))
+                    return it.previousIndex();
+        }
+        return -1;
     }
 
+    /**
+     * 倒序寻找元素的索引值
+     * @param o
+     * @return
+     */
     @Override
     public int lastIndexOf(Object o) {
+        ListIterator<E> it = listIterator();
+        if (o == null) {
+            while (it.hasPrevious()) {
+                if (it.previous() == null) {
+                    return it.nextIndex();
+                }
+            }
+        } else {
+            while (it.hasPrevious()) {
+                if (o.equals(it.previous())) {
+                    return it.nextIndex();
+                }
+            }
+        }
         return 0;
     }
 
