@@ -56,6 +56,129 @@ public class LinkedListClass<E> extends AbstractSequentialList<E>
         addAll(c);
     }
 
+    // 链表相关操作方法
+
+    /**
+     * 将元素设置为链表的第一个元素
+     * new Node<>(null, e, next) 创建链表第一个元素
+     * new Node<>(prev, e, null) 创建链表最后一个元素
+     *
+     * @param e
+     */
+    private void linkFirst(E e) {
+        final Node<E> f = first;
+        final Node<E> newNode = new Node<>(null, e, f);
+        first = newNode;
+        if (f == null)
+            last = newNode;
+        else
+            f.prev = newNode;
+        size++;
+        modCount++;
+    }
+
+    /**
+     * 将元素设置为链表最后一个元素
+     */
+    void linkLast(E e) {
+        final Node<E> l = last;
+        final Node<E> newNode = new Node<>(l, e, null);
+        last = newNode;
+        if (l == null)
+            first = newNode;
+        else
+            l.next = newNode;
+        size++;
+        modCount++;
+    }
+
+    /**
+     * 在一个非空节点前插入一个新节点
+     * @param e
+     * @param succ
+     */
+    void linkBefore(E e, Node<E> succ) {
+        // assert succ != null;
+        final Node<E> pred = succ.prev;
+        final Node<E> newNode = new Node<>(pred, e, succ);
+        succ.prev = newNode;
+        if (pred == null)
+            first = newNode;
+        else
+            pred.next = newNode;
+        size++;
+        modCount++;
+    }
+
+    /**
+     * 将节点f之前的数据删除，将f之后的节点设置为链表的第一个节点
+     * 一般 f 节点为当前链表的第一个节点
+     * @param f
+     * @return
+     */
+    private E unlinkFirst(Node<E> f) {
+        // assert f == first && f != null;
+        final E element = f.item;
+        final Node<E> next = f.next;
+        f.item = null;
+        f.next = null; // help GC
+        first = next;
+        if (next == null)
+            last = null;
+        else
+            next.prev = null;
+        size--;
+        modCount++;
+        return element;
+    }
+
+    /**
+     * 删除节点l后的所有节点，将l的前一个节点设置为链表最后一个节点
+     */
+    private E unlinkLast(Node<E> l) {
+        // assert l == last && l != null;
+        final E element = l.item;
+        final Node<E> prev = l.prev;
+        l.item = null;
+        l.prev = null; // help GC
+        last = prev;
+        if (prev == null)
+            first = null;
+        else
+            prev.next = null;
+        size--;
+        modCount++;
+        return element;
+    }
+
+    /**
+     * 删除指定节点
+     */
+    E unlink(Node<E> x) {
+        // assert x != null;
+        final E element = x.item;
+        final Node<E> next = x.next;
+        final Node<E> prev = x.prev;
+
+        if (prev == null) {
+            first = next;
+        } else {
+            prev.next = next;
+            x.prev = null;
+        }
+
+        if (next == null) {
+            last = prev;
+        } else {
+            next.prev = prev;
+            x.next = null;
+        }
+
+        x.item = null;
+        size--;
+        modCount++;
+        return element;
+    }
     @Override
     public ListIterator<E> listIterator(int index) {
         return null;
